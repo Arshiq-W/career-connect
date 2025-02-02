@@ -23,8 +23,9 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index($key = null)
     {
+        session()->put('key',$key);
         return view('dashboard.dashboard');
     }
     public function aboutUs()

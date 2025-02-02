@@ -41,4 +41,12 @@ class User extends Authenticatable
     {
         return $this->hasOne(Profile::class);
     }
+    public function userEducation()
+    {
+        return $this->hasMany(UserEducation::class);
+    }
+    public function userSkill()
+    {
+        return $this->hasMany(UserSkill::class);
+    }
 }

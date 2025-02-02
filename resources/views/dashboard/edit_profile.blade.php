@@ -113,19 +113,19 @@
     <div class="sidebar">
         <h5 class="mb-3"><strong>Career.Connect</strong></h5>
         <div class="nav flex-column">
-            <div class="nav-item active">Basic Information</div>
-            <div class="nav-item  text-danger">Education 
-                
+            <div class="nav-item @if(session('key') == 'basic_info' || session()->has('key')) active @endif">Basic Information</div>
+            <div class="nav-item  @if(session('key') == 'education') active @elseif(session('key') == 'tech_skills' || session()->has('key')) text-primary @else text-danger @endif">Education 
+                @if(!session()->has('key'))
                      <span class="text-danger">●</span> 
-                
+                @endif 
             </div>
-            <div class="nav-item  text-danger">Technical Skills
-                
+            <div class="nav-item  @if(session('key') == 'tech_skills') active @elseif(session()->has('key')) text-primary @else text-danger  @endif">Technical Skills
+                 @if(!session()->has('key'))
                      <span class="text-danger">●</span> 
-                </div>
-            <div class="nav-item  text-danger">Profile Summary 
+                @endif </div>
+            <div class="nav-item  @if(!session()->has('key')) text-danger @else text-primary @endif">Profile Summary @if(!session()->has('key'))
                      <span class="text-danger">●</span> 
-                </div>
+                @endif </div>
         </div>
     </div>
 </div>
@@ -140,7 +140,7 @@
             <form id="stepperForm" action="{{route('store-profile')}}" method="POST">
                 @csrf
                 <!-- Step 1: Basic Information -->
-                <div class="step active" id="step1">
+                <div class="step @if(session('key') == 'basic_info' || !session()->has('key')) active @endif" id="step1">
                     <h4>Basic Information</h4>
                     <div class="mb-3">
                         <label for="firstName" class="form-label">First Name *</label>
@@ -155,7 +155,7 @@
                         <select id="country" name="country" class="form-select" required>
                             <option value="">Select Country</option>
                             @forelse ($countries as $country)
-                                <option value="{{$country->id}}">{{$country->country??''}}</option>
+                                <option value="{{$country->id}}" @if(auth()->user()->profile->country == $country->id) selected @endif>{{$country->country??''}}</option>
                             @empty
                             <option value="">No Country Available</option>
                             @endforelse
@@ -165,160 +165,187 @@
                 </div>
 
                 <!-- Step 2: Education -->
-                <div class="step " id="step2">
-                 
-                <div class="education-section" id="education-1">
-                    <h4>Education 1</h4>
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label class="form-label">University / School *</label>
-                            <input type="text" class="form-control university" name="education[university_1]" placeholder="University / School" required>
-                            <small class="error-text">Please provide a valid university/school name</small>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Country *</label>
-                            <select class="form-select country" name="education[country_1]" required>
-                                <option value="" >Country</option>
-                                <option value="USA">USA</option>
-                                <option value="UK">UK</option>
-                                <option value="Canada">Canada</option>
-                            </select>
-                            <small class="error-text">Please provide a valid country</small>
-                        </div>
-                    </div>
-
-                    <div class="row g-3 mt-3">
-                        <div class="col-md-6">
-                            <label class="form-label">Degree *</label>
-                            <select class="form-select degree" name="education[degree_1]" required>
-                                <option value="" selected>Degree</option>
-                                <option value="Bachelors">Bachelors</option>
-                                <option value="Masters">Masters</option>
-                                <option value="PhD">PhD</option>
-                            </select>
-                            <small class="error-text">Please provide a valid degree</small>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Field of study *</label>
-                            <input type="text" class="form-control field-of-study" name="education[field_1]" placeholder="Field of study" required>
-                            <!-- <small class="error-text">Please provide a valid field of study</small> -->
-                        </div>
-                    </div>
-
-                    <div class="row g-3 mt-3">
-                        <div class="col-md-6">
-                            <label class="form-label">Start Date *</label>
-                            <div class="d-flex gap-2">
-                                <select class="form-select start-year" name="education[start_year_1]" required>
-                                <option value="" selected>Year</option>
-                                    <option value="2006">2006</option>
-                                    <option value="2007">2007</option>
-                                    <option value="2008">2008</option>
-                                    <option value="2009">2009</option>
-                                    <option value="2010">2010</option>
-                                    <option value="2011">2011</option>
-                                    <option value="2012">2012</option>
-                                    <option value="2013">2013</option>
-                                    <option value="2014">2014</option>
-                                    <option value="2015">2015</option>
-                                    <option value="2016">2016</option>
-                                    <option value="2017">2017</option>
-                                    <option value="2018">2018</option>
-                                    <option value="2019">2019</option>
-                                    <option value="2020">2020</option>
-                                    <option value="2021">2021</option>
-                                    <option value="2022">2022</option>
-                                    <option value="2023">2023</option>
-                                    <option value="2024">2024</option>
-                                    <option value="2025">2025</option>
-                                    
-                                </select>
-                                <select class="form-select start-month" name="education[start_month_1]" required>
-                                <option value="" selected>Month</option>
-                                    <option  value="january">January</option>
-                                    <option value="february">February</option>
-                                    <option value="march">March</option>
-                                    <option value="april">April</option>
-                                    <option value="may">May</option>
-                                    <option value="june">June</option>
-                                    <option value="july">July</option>
-                                    <option value="august">August</option>
-                                    <option value="september">September</option>
-                                    <option value="october">October</option>
-                                    <option value="november">Novemeber</option>
-                                    <option value="december">December</option>
-                                    
-                                </select>
+                <div class="step @if(session('key') == 'education' || !session()->has('key')) active @endif" id="step2">
+                @forelse (auth()->user()->userEducation as $education)
+                        <input type="hidden" value="{{ $loop->index + 1 }}" class="education-count">
+                        <div class="education-section" id="education-{{ $loop->index + 1 }}">
+                            <h4>Education {{ $loop->index + 1 }}</h4>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">University / School *</label>
+                                    <input type="text" class="form-control university" name="education[university_{{ $loop->index + 1 }}]" placeholder="University / School" value="{{ $education->university }}" required>
+                                    <small class="error-text">Please provide a valid university/school name</small>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Country *</label>
+                                    <select class="form-select country" name="education[country_{{ $loop->index + 1 }}]" required>
+                                        <option value="" >Country</option>
+                                        <option value="USA" {{ $education->country == 'USA' ? 'selected' : '' }}>USA</option>
+                                        <option value="UK" {{ $education->country == 'UK' ? 'selected' : '' }}>UK</option>
+                                        <option value="Canada" {{ $education->country == 'Canada' ? 'selected' : '' }}>Canada</option>
+                                    </select>
+                                    <small class="error-text">Please provide a valid country</small>
+                                </div>
                             </div>
-                            <!-- <small class="error-text">Please provide a valid start date</small> -->
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">End Date *</label>
-                            <div class="d-flex gap-2">
-                                <select class="form-select end-year" name="education[end_year_1]" required>
-                                <option value="" selected>Year</option>
-                                    <option value="2006">2006</option>
-                                    <option value="2007">2007</option>
-                                    <option value="2008">2008</option>
-                                    <option value="2009">2009</option>
-                                    <option value="2010">2010</option>
-                                    <option value="2011">2011</option>
-                                    <option value="2012">2012</option>
-                                    <option value="2013">2013</option>
-                                    <option value="2014">2014</option>
-                                    <option value="2015">2015</option>
-                                    <option value="2016">2016</option>
-                                    <option value="2017">2017</option>
-                                    <option value="2018">2018</option>
-                                    <option value="2019">2019</option>
-                                    <option value="2020">2020</option>
-                                    <option value="2021">2021</option>
-                                    <option value="2022">2022</option>
-                                    <option value="2023">2023</option>
-                                    <option value="2024">2024</option>
-                                    <option value="2025">2025</option>
-                                    
-                                </select>
-                                <select class="form-select end-month" name="education[end_month_1]" required>
-                                <option value="" selected>Month</option>
-                                    <option  value="january">January</option>
-                                    <option value="february">February</option>
-                                    <option value="march">March</option>
-                                    <option value="april">April</option>
-                                    <option value="may">May</option>
-                                    <option value="june">June</option>
-                                    <option value="july">July</option>
-                                    <option value="august">August</option>
-                                    <option value="september">September</option>
-                                    <option value="october">October</option>
-                                    <option value="november">Novemeber</option>
-                                    <option value="december">December</option>
-                                </select>
+
+                            <div class="row g-3 mt-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Degree *</label>
+                                    <select class="form-select degree" name="education[degree_{{ $loop->index + 1 }}]" required>
+                                        <option value="" selected>Degree</option>
+                                        <option value="Bachelors" {{ $education->degree == 'Bachelors' ? 'selected' : '' }}>Bachelors</option>
+                                        <option value="Masters" {{ $education->degree == 'Masters' ? 'selected' : '' }}>Masters</option>
+                                        <option value="PhD" {{ $education->degree == 'PhD' ? 'selected' : '' }}>PhD</option>
+                                    </select>
+                                    <small class="error-text">Please provide a valid degree</small>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Field of study *</label>
+                                    <input type="text" class="form-control field-of-study" name="education[field_{{ $loop->index + 1 }}]" value="{{ $education->field_of_study }}" placeholder="Field of study" required>
+                                </div>
                             </div>
-                            <small class="error-text">End date should not be less than start date</small>
+
+                            <div class="row g-3 mt-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Start Date *</label>
+                                    <div class="d-flex gap-2">
+                                        <select class="form-select start-year" name="education[start_year_{{ $loop->index + 1 }}]" required>
+                                            <option value="" >Year</option>
+                                            @for ($i = 2006; $i <= 2025; $i++)
+                                                <option value="{{ $i }}" {{ $education->start_date == $i ? 'selected' : '' }}>{{ $i }}</option>
+                                            @endfor
+                                        </select>
+                                        <select class="form-select start-month" name="education[start_month_{{ $loop->index + 1 }}]" required>
+                                            <option value="" >Month</option>
+                                            @foreach (['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] as $month)
+                                                <option value="{{ strtolower($month) }}" {{ $education->start_month == $month ? 'selected' : '' }}>{{ $month }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">End Date *</label>
+                                    <div class="d-flex gap-2">
+                                        <select class="form-select end-year" name="education[end_year_{{ $loop->index + 1 }}]" {{ $education->end_date == 'on' ? 'disabled' : '' }} required>
+                                            <option value="" >Year</option>
+                                            @for ($i = 2006; $i <= 2025; $i++)
+                                                <option value="{{ $i }}" {{ $education->end_date  == $i ? 'selected' : '' }}>{{ $i }}</option>
+                                            @endfor
+                                        </select>
+                                        <select class="form-select end-month" name="education[end_month_{{ $loop->index + 1 }}]" {{ $education->end_date == 'on' ? 'disabled' : '' }} required>
+                                            <option value="" >Month</option>
+                                            @foreach (['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] as $month)
+                                                <option value="{{ strtolower($month) }}" {{ $education->end_month == $month ? 'selected' : '' }} >{{ $month }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <small class="error-text">End date should not be less than start date</small>
+                                </div>
+                            </div>
+
+                            <div class="mt-3">
+                                <input type="checkbox" class="studying" id="studying_{{ $loop->index + 1 }}" name="education[studying_{{ $loop->index + 1 }}]" {{ $education->end_date == 'on' ? 'checked' : '' }}>
+                                <label for="studying_{{ $loop->index + 1 }}">Currently studying</label>
+                            </div>
                         </div>
+                    @empty
+                        <div class="education-section" id="education-1">
+                            <h4>Education 1</h4>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">University / School *</label>
+                                    <input type="text" class="form-control university" name="education[university_1]" placeholder="University / School" required>
+                                    <small class="error-text">Please provide a valid university/school name</small>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Country *</label>
+                                    <select class="form-select country" name="education[country_1]" required>
+                                        <option value="">Country</option>
+                                        <option value="USA">USA</option>
+                                        <option value="UK">UK</option>
+                                        <option value="Canada">Canada</option>
+                                    </select>
+                                    <small class="error-text">Please provide a valid country</small>
+                                </div>
+                            </div>
+
+                            <div class="row g-3 mt-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Degree *</label>
+                                    <select class="form-select degree" name="education[degree_1]" required>
+                                        <option value="" selected>Degree</option>
+                                        <option value="Bachelors">Bachelors</option>
+                                        <option value="Masters">Masters</option>
+                                        <option value="PhD">PhD</option>
+                                    </select>
+                                    <small class="error-text">Please provide a valid degree</small>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Field of study *</label>
+                                    <input type="text" class="form-control field-of-study" name="education[field_1]" placeholder="Field of study" required>
+                                </div>
+                            </div>
+
+                            <div class="row g-3 mt-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Start Date *</label>
+                                    <div class="d-flex gap-2">
+                                        <select class="form-select start-year" name="education[start_year_1]" required>
+                                            <option value="" selected>Year</option>
+                                            @for ($i = 2006; $i <= 2025; $i++)
+                                                <option value="{{ $i }}">{{ $i }}</option>
+                                            @endfor
+                                        </select>
+                                        <select class="form-select start-month" name="education[start_month_1]" required>
+                                            <option value="" selected>Month</option>
+                                            @foreach (['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] as $month)
+                                                <option value="{{ strtolower($month) }}">{{ $month }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">End Date *</label>
+                                    <div class="d-flex gap-2">
+                                        <select class="form-select end-year" name="education[end_year_1]" required>
+                                            <option value="" selected>Year</option>
+                                            @for ($i = 2006; $i <= 2025; $i++)
+                                                <option value="{{ $i }}">{{ $i }}</option>
+                                            @endfor
+                                        </select>
+                                        <select class="form-select end-month" name="education[end_month_1]" required>
+                                            <option value="" selected>Month</option>
+                                            @foreach (['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] as $month)
+                                                <option value="{{ strtolower($month) }}">{{ $month }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <small class="error-text">End date should not be less than start date</small>
+                                </div>
+                            </div>
+
+                            <div class="mt-3">
+                                <input type="checkbox" class="studying" id="studying_1" name="education[studying_1]" data-id="1">
+                                <label for="studying_1">Currently studying</label>
+                            </div>
+                        </div>
+                    @endforelse
+
+                    <div class="mt-4">
+                        <button type="button" class="btn btn-light" id="addEducation">+ Add Education</button>
                     </div>
 
-                    <div class="mt-3">
-                        <input type="checkbox" class="studying" id="studying_1" name="education[end_year_1]" data-id="1">
-                        <label for="studying_1">Currently studying</label>
+                    <div class="mt-4 d-flex justify-content-between">
+                        <button type="button" class="btn btn-prev">Back</button>
+                        <button type="button" class="btn btn-next">Next</button>
                     </div>
 
-            </div>
-
-                        <div class="mt-4">
-                            <button type="button" class="btn btn-light" id="addEducation">+ Add Education</button>
-                        </div>
-
-                        <div class="mt-4 d-flex justify-content-between">
-                            <button type="button" class="btn btn-prev" >Back</button>
-                            <button type="button" class="btn btn-next" >Next</button>
-                        </div>
                 </div>
 
                 <!-- Step 3: Technical Skills -->
-                <div class="step " id="step3">
-                    <h4>Technical Skills</h4>
+                <div class="step @if(session('key') == 'tech_skills' || !session()->has('key')) active @endif" id="step3">
+                
+                    
                     <div class="mb-3">
                         <label for="experience" class="form-label">Years of Full-time Work Experience *</label>
                         <select id="experience" name="experience" class="form-select" required>
@@ -484,9 +511,10 @@
 </script>
 <script>
     $(document).ready(function () {
-    let educationCount = 1; // Start from 1 as there's already one education section
-
-    $("#addEducation").click(function () {
+        
+        // Start from 1 as there's already one education section
+        $("#addEducation").click(function () {
+        let educationCount = $(".education-section").length;
         educationCount++;
         
         let educationHtml = `
