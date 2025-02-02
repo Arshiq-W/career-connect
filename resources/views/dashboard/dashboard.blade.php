@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Career.Connect</title>
+    <title>Career.Connect - Stepper Form</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -30,12 +30,20 @@
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 900px;
+            margin: 50px auto;
         }
         .form-control {
             border-radius: 5px;
         }
         .btn-next {
             background-color: #007bff;
+            color: #fff;
+            border-radius: 5px;
+            padding: 10px 20px;
+        }
+        .btn-prev {
+            background-color: #6c757d;
             color: #fff;
             border-radius: 5px;
             padding: 10px 20px;
@@ -53,139 +61,179 @@
             border-radius: 5px;
             font-size: 14px;
         }
+        .step {
+            display: none;
+        }
+        .step.active {
+            display: block;
+        }
+        label {
+            font-weight: bold;
+        }
+        .btn-next:hover, .btn-prev:hover {
+            opacity: 0.9;
+        }
+        .mb-3 input, .mb-3 select {
+            padding: 10px;
+        }
+        .text-danger {
+            font-size: 0.9rem;
+        }
     </style>
 </head>
 <body>
 
-<div class="container-fluid mt-4">
-    <div class="row">
-        <div class="col-md-3">
-            <div class="sidebar">
-                <h5 class="mb-3"><strong>Career.Connect</strong></h5>
-                <div class="nav flex-column">
-                    <div class="nav-item active">Basic Information</div>
-                    <div class="nav-item text-danger">Education <span class="text-danger">●</span></div>
-                    <div class="nav-item text-danger">Technical Skills <span class="text-danger">●</span></div>
-                    <div class="nav-item text-danger">Profile Summary <span class="text-danger">●</span></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-9">
-            <div class="welcome-text">
-                Welcome to Career.Connect
-            </div>
-            <div>
-                <form action="{{route('logout')}}" method="POST">
-                    @csrf
-                    <button type="submit">Logout</button>
-                </form>
-            </div>
-            <div class="form-container">
-                <h4>Let's level up your profile!</h4>
-                <p>Filling out this form helps Career.Connect match you with job opportunities that best align with your skills.</p>
-                <div class="form-check mb-3">
-                    <input type="checkbox" class="form-check-input" id="autosave" checked>
-                    <label class="form-check-label" for="autosave">This form auto-saves all your progress.</label>
-                </div>
-
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label class="form-label">First name *</label>
-                        <input type="text" class="form-control" placeholder="First name" value="{{auth()->user()->first_name??''}}" required>
-                        <small class="message">First name is a required field, it can't be empty</small>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Last name *</label>
-                        <input type="text" class="form-control" placeholder="Last name" value="{{auth()->user()->last_name??''}}" required>
-                        <small class="message">Last name is a required field, it can't be empty</small>
-                    </div>
-                </div>
-
-                <div class="row g-3 mt-3">
-                    <div class="col-md-6">
-                        <label class="form-label">Country of residence *</label>
-                        <select class="form-select">
-                            <option value="" selected>Country of residence</option>
-                            <option value="USA">USA</option>
-                            <option value="UK">UK</option>
-                            <option value="Canada">Canada</option>
-                        </select>
-                        <small class="message">Please provide your country</small>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">City of residence (Optional)</label>
-                        <input type="text" class="form-control" placeholder="City of residence">
-                    </div>
-                </div>
-
-                <div class="row g-3 mt-3">
-                    <div class="col-md-6">
-                        <label class="form-label">Phone number *</label>
-                        <div class="input-group">
-                            <span class="input-group-text">+92</span>
-                            <input type="tel" class="form-control phone-input" placeholder="Phone number">
-                        </div>
-                        <small class="message">Please provide your phone number</small>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Expected annual earnings (Optional)</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Expected earnings">
-                            <span class="input-group-text">PKR</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-3 note-box">
-                    <p>The rate you provide here is just a reference point, you can update it later.</p>
-                </div>
-
-                <div class="mt-4 text-end">
-                    <button class="btn btn-next" onclick="goToNextPage()">Next</button>
-                </div>
-            </div>
+<div class="row">
+<div class="col-md-3">
+    <div class="sidebar">
+        <h5 class="mb-3"><strong>Career.Connect</strong></h5>
+        <div class="nav flex-column">
+            <div class="nav-item active">Basic Information</div>
+            <div class="nav-item text-danger">Education <span class="text-danger">●</span></div>
+            <div class="nav-item text-danger">Technical Skills <span class="text-danger">●</span></div>
+            <div class="nav-item text-danger">Profile Summary <span class="text-danger">●</span></div>
         </div>
     </div>
 </div>
 
+<div class="col-md-9">
+    <div class="welcome-text">
+        Welcome to Career.Connect
+</div>
+
+    <div class="col-md-9">
+        <div class="form-container">
+            <form id="stepperForm" action="">
+                <!-- Step 1: Basic Information -->
+                <div class="step active" id="step1">
+                    <h4>Basic Information</h4>
+                    <div class="mb-3">
+                        <label for="firstName" class="form-label">First Name *</label>
+                        <input type="text" id="firstName" name="firstName" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="lastName" class="form-label">Last Name *</label>
+                        <input type="text" id="lastName" name="lastName" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="country" class="form-label">Country of Residence *</label>
+                        <select id="country" name="country" class="form-select" required>
+                            <option value="">Select Country</option>
+                            <option value="USA">USA</option>
+                            <option value="UK">UK</option>
+                            <option value="Canada">Canada</option>
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-next">Next</button>
+                </div>
+
+                <!-- Step 2: Education -->
+                <div class="step" id="step2">
+                    <h4>Education</h4>
+                    <div class="mb-3">
+                        <label for="university" class="form-label">University / School *</label>
+                        <input type="text" id="university" name="university" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="degree" class="form-label">Degree *</label>
+                        <select id="degree" name="degree" class="form-select" required>
+                            <option value="">Select Degree</option>
+                            <option value="Bachelors">Bachelors</option>
+                            <option value="Masters">Masters</option>
+                            <option value="PhD">PhD</option>
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-prev">Previous</button>
+                    <button type="button" class="btn btn-next">Next</button>
+                </div>
+
+                <!-- Step 3: Technical Skills -->
+                <div class="step" id="step3">
+                    <h4>Technical Skills</h4>
+                    <div class="mb-3">
+                        <label for="experience" class="form-label">Years of Full-time Work Experience *</label>
+                        <select id="experience" name="experience" class="form-select" required>
+                            <option value="">Select experience</option>
+                            <option>0-1 years</option>
+                            <option>1-3 years</option>
+                            <option>3-5 years</option>
+                            <option>5+ years</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="role" class="form-label">Preferred Role *</label>
+                        <select id="role" name="role" class="form-select" required>
+                            <option value="">Select a role</option>
+                            <option value="frontend">Web Frontend</option>
+                            <option value="backend">Backend Developer</option>
+                            <option value="fullstack">Full Stack Developer</option>
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-prev">Previous</button>
+                    <button type="submit" class="btn btn-next">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
 <script>
-    function validateFields() {
-        const fields = document.querySelectorAll(".form-control, .form-select, .phone-input");
+    let currentStep = 0;
+    const steps = $(".step");
 
-        fields.forEach(field => {
-            let message;
-            if (field.classList.contains("phone-input")) {
-                message = field.closest(".input-group").nextElementSibling;
-            } else {
-                message = field.closest(".col-md-6").querySelector(".message");
-            }
-
-            if (field.value.trim() === "" || (field.tagName === "SELECT" && field.value === "")) {
-                if (message) {
-                    message.style.color = "red";
-                }
-            } else {
-                if (message) {
-                    message.style.color = "black";
-                }
-            }
-        });
+    function showStep(stepIndex) {
+        steps.removeClass("active");
+        steps.eq(stepIndex).addClass("active");
     }
 
-    // Attach event listeners to inputs and select dropdowns
-    document.querySelectorAll(".form-control, .form-select, .phone-input").forEach(input => {
-        input.addEventListener("input", validateFields);
+    function validateCurrentStep() {
+        const validator = $("#stepperForm").validate();
+        return validator.form();
+    }
+
+    $(".btn-next").click(function () {
+        if (validateCurrentStep()) {
+            currentStep++;
+            if (currentStep >= steps.length) {
+                currentStep = steps.length - 1;
+            }
+            showStep(currentStep);
+        }
     });
 
-    // Initial validation on page load
-    window.onload = validateFields;
+    $(".btn-prev").click(function () {
+        currentStep--;
+        if (currentStep < 0) {
+            currentStep = 0;
+        }
+        showStep(currentStep);
+    });
 
-    function goToNextPage() {
-        window.location.href = 'education.html';
-    }
+    $("#stepperForm").validate({
+        rules: {
+            firstName: "required",
+            lastName: "required",
+            country: "required",
+            university: "required",
+            degree: "required",
+            experience: "required",
+            role: "required"
+        },
+        messages: {
+            firstName: "Please enter your first name",
+            lastName: "Please enter your last name",
+            country: "Please select a country",
+            university: "Please enter your university/school name",
+            degree: "Please select a degree",
+            experience: "Please select your work experience",
+            role: "Please select your preferred role"
+        },
+        errorElement: "div",
+        errorClass: "text-danger mt-1"
+    });
 </script>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
