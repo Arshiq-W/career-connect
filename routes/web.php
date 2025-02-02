@@ -28,15 +28,14 @@ Route::get('/clear-all', function () {
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('/');
 Route::get('run_file',[RunController::class,'runFile']);
 Route::get('dashboard',[WebsiteController::class,'dashboard'])->name('dashboard')->middleware('auth');
 Auth::routes();
 
 
 //website routes
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/about_us', [App\Http\Controllers\HomeController::class, 'aboutUs'])->name('about_us');
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('auth');
 Route::get('/faqs', [App\Http\Controllers\HomeController::class, 'faq'])->name('faqs');
 
 Auth::routes();

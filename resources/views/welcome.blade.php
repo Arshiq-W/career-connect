@@ -176,7 +176,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container">
-        <a class="navbar-brand" href="{{route('home')}}"
+        <a class="navbar-brand" href="{{url('/')}}"
           >Career<span style="color: black;">.</span>Connect</a
         >
         <button
@@ -190,20 +190,32 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
-              <a class="nav-link text-primary" href="{{route('home')}}">Home</a>
+              <a class="nav-link text-primary" href="{{url('/')}}">Home</a>
             </li>
             <!-- <li class="nav-item">
               <a class="nav-link text-primary" href="">About Us</a>
             </li> -->
             <li class="nav-item">
-              <a class="nav-link text-primary" href="javascript:void(0)">FAQs</a>
+              <a class="nav-link text-primary" href="{{url('faqs')}}">FAQs</a>
             </li>
+            @if(Auth::check())
+            <li class="nav-item">
+              <a class="nav-link text-primary" href="{{route('home')}}">Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <form action="{{route('logout')}}" method="POST">
+                @csrf
+                <a class="nav-link text-primary" href="{{route('logout')}}">Logout</a>
+              </form>
+            </li>
+            @else
             <li class="nav-item">
               <a class="nav-link text-primary" href="{{route('register')}}">Sign Up</a>
             </li>
             <li class="nav-item">
               <a class="nav-link text-primary" href="{{route('login')}}">Login</a>
             </li>
+            @endif
           </ul>
         </div>
       </div>

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Models\Country;
 class HomeController extends Controller
 {
     /**
@@ -13,7 +13,9 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $countries = Country::get();
+        return view()->share(['countries'=>$countries]);
+        // $this->middleware('auth');
     }
 
     /**
@@ -27,10 +29,10 @@ class HomeController extends Controller
     }
     public function aboutUs()
     {
-        return view('dashboard.about_us');
+        return view('website.about_us');
     }
     public function faq()
     {
-        return view('dashboard.faq');
+        return view('website.faqs');
     }
 }
