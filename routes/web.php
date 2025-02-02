@@ -30,7 +30,8 @@ Route::get('/', function () {
     return view('welcome');
 })->name('/');
 Route::get('run_file',[RunController::class,'runFile']);
-Route::get('dashboard',[WebsiteController::class,'dashboard'])->name('dashboard')->middleware('auth');
+Route::get('dashboard',[App\Http\Controllers\WebsiteController::class,'dashboard'])->name('dashboard')->middleware('auth');
+Route::post('store_profile',[App\Http\Controllers\WebsiteController::class,'storeProfile'])->name('store-profile')->middleware('auth');
 Auth::routes();
 
 
