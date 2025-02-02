@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('user_education', function (Blueprint $table) {
             $table->id();
             $table->string('university')->nullable();
+            $table->string('user_id');
             $table->string('country')->nullable();
             $table->string('degree')->nullable();
             $table->string('field_of_study')->nullable();

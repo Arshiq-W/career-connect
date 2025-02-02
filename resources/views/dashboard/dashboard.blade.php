@@ -162,12 +162,12 @@
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label class="form-label">University / School *</label>
-                        <input type="text" class="form-control university" name="university_1" placeholder="University / School" required>
+                        <input type="text" class="form-control university" name="education[university_1]" placeholder="University / School" required>
                         <small class="error-text">Please provide a valid university/school name</small>
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Country *</label>
-                        <select class="form-select country" name="country_1" required>
+                        <select class="form-select country" name="education[country_1]" required>
                             <option value="" selected>Country</option>
                             <option value="USA">USA</option>
                             <option value="UK">UK</option>
@@ -180,7 +180,7 @@
                 <div class="row g-3 mt-3">
                     <div class="col-md-6">
                         <label class="form-label">Degree *</label>
-                        <select class="form-select degree" name="degree_1" required>
+                        <select class="form-select degree" name="education[degree_1]" required>
                             <option value="" selected>Degree</option>
                             <option value="Bachelors">Bachelors</option>
                             <option value="Masters">Masters</option>
@@ -190,8 +190,8 @@
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Field of study *</label>
-                        <input type="text" class="form-control field-of-study" name="field_1" placeholder="Field of study" required>
-                        <small class="error-text">Please provide a valid field of study</small>
+                        <input type="text" class="form-control field-of-study" name="education[field_1]" placeholder="Field of study" required>
+                        <!-- <small class="error-text">Please provide a valid field of study</small> -->
                     </div>
                 </div>
 
@@ -199,7 +199,7 @@
                     <div class="col-md-6">
                         <label class="form-label">Start Date *</label>
                         <div class="d-flex gap-2">
-                            <select class="form-select start-year" name="start_year_1" required>
+                            <select class="form-select start-year" name="education[start_year_1]" required>
                             <option value="" selected>Year</option>
                                 <option value="2006">2006</option>
                                 <option value="2007">2007</option>
@@ -223,7 +223,7 @@
                                 <option value="2025">2025</option>
                                 
                             </select>
-                            <select class="form-select start-month" name="start_month_1" required>
+                            <select class="form-select start-month" name="education[start_month_1]" required>
                             <option value="" selected>Month</option>
                                 <option  value="january">January</option>
                                 <option value="february">February</option>
@@ -240,12 +240,12 @@
                                 
                             </select>
                         </div>
-                        <small class="error-text">Please provide a valid start date</small>
+                        <!-- <small class="error-text">Please provide a valid start date</small> -->
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">End Date *</label>
                         <div class="d-flex gap-2">
-                            <select class="form-select end-year" name="end_year_1" required>
+                            <select class="form-select end-year" name="education[end_year_1]" required>
                             <option value="" selected>Year</option>
                                 <option value="2006">2006</option>
                                 <option value="2007">2007</option>
@@ -269,7 +269,7 @@
                                 <option value="2025">2025</option>
                                 
                             </select>
-                            <select class="form-select end-month" name="end_month_1" required>
+                            <select class="form-select end-month" name="education[end_month_1]" required>
                             <option value="" selected>Month</option>
                                 <option  value="january">January</option>
                                 <option value="february">February</option>
@@ -290,7 +290,7 @@
                 </div>
 
                 <div class="mt-3">
-                    <input type="checkbox" class="studying" id="studying_1" data-id="1">
+                    <input type="checkbox" class="studying" id="studying_1" name="education[end_year_1]" data-id="1">
                     <label for="studying_1">Currently studying</label>
                 </div>
 
@@ -485,12 +485,12 @@
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label class="form-label">University / School *</label>
-                        <input type="text" class="form-control university" name="university_${educationCount}" placeholder="University / School" required>
+                        <input type="text" class="form-control university" name="education[university_${educationCount}]" placeholder="University / School" required>
                         <small class="error-text">Please provide a valid university/school name</small>
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Country *</label>
-                        <select class="form-select country" name="country_${educationCount}" required>
+                        <select class="form-select country" name="education[country_${educationCount}]" required>
                             <option value="" selected>Country</option>
                             <option value="USA">USA</option>
                             <option value="UK">UK</option>
@@ -503,7 +503,7 @@
                 <div class="row g-3 mt-3">
                     <div class="col-md-6">
                         <label class="form-label">Degree *</label>
-                        <select class="form-select degree" name="degree_${educationCount}" required>
+                        <select class="form-select degree" name="education[degree_${educationCount}]" required>
                             <option value="" selected>Degree</option>
                             <option value="Bachelors">Bachelors</option>
                             <option value="Masters">Masters</option>
@@ -513,7 +513,7 @@
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Field of study *</label>
-                        <input type="text" class="form-control field-of-study" name="field_${educationCount}" placeholder="Field of study" required>
+                        <input type="text" class="form-control field-of-study" name="education[field_${educationCount}]" placeholder="Field of study" required>
                         <small class="error-text">Please provide a valid field of study</small>
                     </div>
                 </div>
@@ -522,11 +522,11 @@
                     <div class="col-md-6">
                         <label class="form-label">Start Date *</label>
                         <div class="d-flex gap-2">
-                            <select class="form-select start-year" name="start_year_${educationCount}" required>
+                            <select class="form-select start-year" name="education[start_year_${educationCount}]" required>
                                 <option value="" selected>Year</option>
                                 ${generateYearOptions()}
                             </select>
-                            <select class="form-select start-month" name="start_month_${educationCount}" required>
+                            <select class="form-select start-month" name="education[start_month_${educationCount}]" required>
                                 <option value="" selected>Month</option>
                                 ${generateMonthOptions()}
                             </select>
@@ -536,11 +536,11 @@
                     <div class="col-md-6">
                         <label class="form-label">End Date *</label>
                         <div class="d-flex gap-2">
-                            <select class="form-select end-year" name="end_year_${educationCount}" required>
+                            <select class="form-select end-year" name="education[end_year_${educationCount}]" required>
                                 <option value="" selected>Year</option>
                                 ${generateYearOptions()}
                             </select>
-                            <select class="form-select end-month" name="end_month_${educationCount}" required>
+                            <select class="form-select end-month" name="education[end_month_${educationCount}]" required>
                                 <option value="" selected>Month</option>
                                 ${generateMonthOptions()}
                             </select>
@@ -550,7 +550,7 @@
                 </div>
 
                 <div class="mt-3">
-                    <input type="checkbox" class="studying" id="studying_${educationCount}" data-id="${educationCount}">
+                    <input type="checkbox" class="studying" id="studying_${educationCount}" name="education[${educationCount}]" data-id="${educationCount}">
                     <label for="studying_${educationCount}">Currently studying</label>
                 </div>
 
